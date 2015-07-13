@@ -11,6 +11,10 @@
   ],
   "minimum-stability": "dev",
   "require": {
-      "xteam/slackmessenger": "*"
+      
+  },
+      "autoload": {
+      "psr-4": { "XTeam\\HighFiveSlackBundle\\": "" }
   }
+
 }
