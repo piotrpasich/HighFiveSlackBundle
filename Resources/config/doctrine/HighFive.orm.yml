@@ -1,0 +1,38 @@
+XTeam\HighFiveSlackBundle\Entity\HighFive:
+    type: entity
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        createdAt:
+            type: datetime
+            column: created_at
+        type:
+            type: string
+            length: 255
+        receiverName:
+            type: string
+            length: 255
+            column: receiver_name
+    manyToOne:
+        publisher:
+            targetEntity: User
+            inversedBy: highFives
+            cascade: [persist]
+            joinColumn:
+                name: publisher_id
+                referencedColumnName: id
+        channel:
+            targetEntity: Channel
+            inversedBy: highFives
+            cascade: [persist]
+            joinColumn:
+                name: channel_id
+                referencedColumnName: id
+    lifecycleCallbacks:
+        prePersist: [setCreatedAtValue]
+

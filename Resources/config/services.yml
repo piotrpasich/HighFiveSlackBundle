@@ -1,6 +1,29 @@
 services:
+    x_team_high_five_slack.repository.user:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method: getRepository
+        arguments:
+            - XTeamHighFiveSlackBundle:User
+
+    x_team_high_five_slack.repository.channel:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method: getRepository
+        arguments:
+            - XTeamHighFiveSlackBundle:Channel
+
+    x_team_high_five_slack.mapper.high_five:
+        class: XTeam\HighFiveSlackBundle\Mapper\HighFiveMapper
+        arguments:
+            - @x_team_high_five_slack.repository.user
+            - @x_team_high_five_slack.repository.channel
+
     x_team_high_five_slack.listener.message_receiver:
         class: XTeam\HighFiveSlackBundle\Listener\MessageListener
+        arguments:
+            - @x_team_high_five_slack.mapper.high_five
+            - @doctrine.orm.default_entity_manager
         tags:
             - { name: kernel.event_listener, event: slack.message_received, method: receiveMessage }
 
