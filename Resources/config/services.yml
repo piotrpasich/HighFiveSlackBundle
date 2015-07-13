@@ -1,0 +1,6 @@
+services:
+    x_team_high_five_slack.listener.message_receiver:
+        class: XTeam\HighFiveSlackBundle\Listener\MessageListener
+        tags:
+            - { name: kernel.event_listener, event: slack.message_received, method: receiveMessage }
+

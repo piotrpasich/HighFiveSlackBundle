@@ -1,0 +1,16 @@
+{
+  "name": "xteam/highfiveslackbundle",
+  "description": "This bundle counts how many high fives have been published on slack",
+  "type": "symfony-bundle",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Piotr Pasich",
+      "email": "piotr.pasich@x-team.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+      "xteam/slackmessenger": "*"
+  }
+}
