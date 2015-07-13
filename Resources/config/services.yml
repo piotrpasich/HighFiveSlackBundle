@@ -13,11 +13,22 @@ services:
         arguments:
             - XTeamHighFiveSlackBundle:Channel
 
+    x_team_high_five_slack.builder.channel:
+        class: XTeam\HighFiveSlackBundle\Builder\ChannelEntityBuilder
+        arguments:
+            - @x_team_high_five_slack.repository.channel
+
+    x_team_high_five_slack.builder.user:
+        class: XTeam\HighFiveSlackBundle\Builder\UserEntityBuilder
+        arguments:
+            - @x_team_high_five_slack.repository.user
+
     x_team_high_five_slack.mapper.high_five:
         class: XTeam\HighFiveSlackBundle\Mapper\HighFiveMapper
         arguments:
-            - @x_team_high_five_slack.repository.user
-            - @x_team_high_five_slack.repository.channel
+            - @x_team_high_five_slack.builder.user
+            - @x_team_high_five_slack.builder.channel
+            - @x_team_high_five_slack.parser.mentions_message_parser
 
     x_team_high_five_slack.listener.message_receiver:
         class: XTeam\HighFiveSlackBundle\Listener\MessageListener
@@ -26,4 +37,16 @@ services:
             - @doctrine.orm.default_entity_manager
         tags:
             - { name: kernel.event_listener, event: slack.message_received, method: receiveMessage }
+
+    x_team_high_five_slack.data_provider.slack_user_provider:
+        class: XTeam\HighFiveSlackBundle\DataProvider\SlackUserProvider
+        arguments:
+            - @x_team_slack_messenger.slack.api.client
+            - @x_team_high_five_slack.builder.user
+            - @x_team_slack_messenger.builder.slack_api_user_builder
+
+    x_team_high_five_slack.parser.mentions_message_parser:
+        class: XTeam\HighFiveSlackBundle\MessageParser\MentionsMessageParser
+        arguments:
+            - @x_team_high_five_slack.data_provider.slack_user_provider
 

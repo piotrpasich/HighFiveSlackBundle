@@ -11,7 +11,11 @@ XTeam\HighFiveSlackBundle\Entity\User:
             type: string
             length: 255
     oneToMany:
-        highFives:
+        highFivesPublished:
             targetEntity: HighFive
             mappedBy: publisher
+    manyToMany:
+        highFivesReceived:
+            targetEntity: HighFive
+            inversedBy: receiver
     lifecycleCallbacks: {  }

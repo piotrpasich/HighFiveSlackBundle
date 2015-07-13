@@ -2,6 +2,7 @@
 
 namespace XTeam\HighFiveSlackBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,56 +36,30 @@ class HighFive
     private $publisher;
 
     /**
-     * @var string
+     * @var ArrayCollection
      */
-    private $receiverName;
+    private $receivers;
 
+    public function __construct()
+    {
+        $this->receivers = new ArrayCollection();
+    }
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
     public function getId()
     {
         return $this->id;
     }
-
-    /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     * @return HighFive
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
 
     public function setCreatedAtValue()
     {
         $this->createdAt = new \DateTime();
     }
 
-    /**
-     * Get createdAt
-     *
-     * @return \DateTime 
-     */
     public function getCreatedAt()
     {
         return $this->createdAt;
     }
 
-    /**
-     * Set type
-     *
-     * @param string $type
-     * @return HighFive
-     */
     public function setType($type)
     {
         $this->type = $type;
@@ -92,22 +67,11 @@ class HighFive
         return $this;
     }
 
-    /**
-     * Get type
-     *
-     * @return string 
-     */
     public function getType()
     {
         return $this->type;
     }
 
-    /**
-     * Set channelId
-     *
-     * @param integer $channelId
-     * @return HighFive
-     */
     public function setChannel($channel)
     {
         $this->channel = $channel;
@@ -115,22 +79,11 @@ class HighFive
         return $this;
     }
 
-    /**
-     * Get channelId
-     *
-     * @return integer 
-     */
     public function getChannel()
     {
         return $this->channel;
     }
 
-    /**
-     * Set publisherId
-     *
-     * @param integer $publisherId
-     * @return HighFive
-     */
     public function setPublisher($publisher)
     {
         $this->publisher = $publisher;
@@ -138,36 +91,20 @@ class HighFive
         return $this;
     }
 
-    /**
-     * Get publisherId
-     *
-     * @return integer 
-     */
     public function getPublisher()
     {
         return $this->publisher;
     }
 
-    /**
-     * Set receiverName
-     *
-     * @param string $receiverName
-     * @return HighFive
-     */
-    public function setReceiverName($receiverName)
+    public function addReceiver(User $receiver)
     {
-        $this->receiverName = $receiverName;
+        $this->receivers->add($receiver);
 
         return $this;
     }
 
-    /**
-     * Get receiverName
-     *
-     * @return string 
-     */
-    public function getReceiverName()
+    public function getReceivers()
     {
-        return $this->receiverName;
+        return $this->receivers;
     }
 }

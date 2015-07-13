@@ -2,30 +2,41 @@
 
 namespace XTeam\HighFiveSlackBundle\Mapper;
 
+use XTeam\HighFiveSlackBundle\Builder\ChannelEntityBuilder;
+use XTeam\HighFiveSlackBundle\Builder\UserEntityBuilder;
 use XTeam\HighFiveSlackBundle\Entity\Channel;
-use XTeam\HighFiveSlackBundle\Entity\ChannelRepositoryInterface;
 use XTeam\HighFiveSlackBundle\Entity\HighFive;
 use XTeam\HighFiveSlackBundle\Entity\User;
-use XTeam\HighFiveSlackBundle\Entity\UserRepositoryInterface;
+use XTeam\HighFiveSlackBundle\MessageParser\MentionsMessageParser;
 use XTeam\SlackMessengerBundle\Model\Message;
 
 class HighFiveMapper
 {
 
     /**
-     * @var UserRepositoryInterface
+     * @var UserEntityBuilder
      */
-    private $userRepository;
+    private $userEntityBuilder;
 
     /**
-     * @var ChannelRepositoryInterface
+     * @var ChannelEntityBuilder
      */
-    private $channelRepository;
+    private $channelEntityBuilder;
 
-    public function __construct(UserRepositoryInterface $userRepository, ChannelRepositoryInterface $channelRepository)
+    /**
+     * @var MentionsMessageParser
+     */
+    private $mentionsMessageParser;
+
+    public function __construct(
+        UserEntityBuilder $userEntityBuilder,
+        ChannelEntityBuilder $channelEntityBuilder,
+        MentionsMessageParser $mentionsMessageParser
+    )
     {
-        $this->userRepository = $userRepository;
-        $this->channelRepository = $channelRepository;
+        $this->userEntityBuilder = $userEntityBuilder;
+        $this->channelEntityBuilder = $channelEntityBuilder;
+        $this->mentionsMessageParser = $mentionsMessageParser;
     }
 
     /**
@@ -34,8 +45,8 @@ class HighFiveMapper
      */
     public function getHighFive(Message $message)
     {
-        $publisher = $this->mapPublisher($message);
-        $channel   = $this->mapChannel($message);
+        $publisher = $this->userEntityBuilder->getUser($message->getUser());
+        $channel   = $this->channelEntityBuilder->getChannel($message->getChannel());
         $highFive  = $this->mapHighFive($message);
 
         $highFive->setPublisher($publisher);
@@ -44,27 +55,15 @@ class HighFiveMapper
         return $highFive;
     }
 
-    private function mapChannel(Message $message)
-    {
-        return $this->channelRepository->findOneById((string)$message->getChannel()->getId()) ?:
-            (new Channel())
-                ->setName((string)$message->getChannel()->getName())
-                ->setId((string)$message->getChannel()->getId());
-    }
-
-    private function mapPublisher(Message $message)
-    {
-        return $this->userRepository->findOneById((string)$message->getUser()->getId()) ?:
-            (new User())
-                ->setName((string)$message->getUser()->getName())
-                ->setId((string)$message->getUser()->getId());
-    }
-
     private function mapHighFive(Message $message)
     {
         $highFive = new HighFive();
 
-        $highFive->setReceiverName('test');
+        foreach ($this->mentionsMessageParser->parse($message->getText()) as $receiver) {
+            $highFive->addReceiver($receiver);
+        }
+
+        //@todo catch type (VO)
         $highFive->setType('high five');
 
         return $highFive;

@@ -20,11 +20,20 @@ class User
      */
     private $name;
 
-    private $highFives;
+    /**
+     * @var ArrayCollection
+     */
+    private $highFivesReceived;
+
+    /**
+     * @var ArrayCollection
+     */
+    private $highFivesPublished;
 
     public function __construct()
     {
-        $this->highFives = new ArrayCollection();
+        $this->highFivesReceived = new ArrayCollection();
+        $this->highFivesPublished = new ArrayCollection();
     }
 
     /**
@@ -71,19 +80,18 @@ class User
     }
 
     /**
-     * @return mixed
+     * @return ArrayCollection
      */
-    public function getHighFives()
+    public function getHighFivesReceived()
     {
-        return $this->highFives;
+        return $this->highFivesReceived;
     }
 
     /**
-     * @param mixed $highFives
+     * @return ArrayCollection
      */
-    public function setHighFives($highFives)
+    public function getHighFivesPublished()
     {
-        $this->highFives = $highFives;
+        return $this->highFivesPublished;
     }
 }
-

@@ -14,10 +14,6 @@ XTeam\HighFiveSlackBundle\Entity\HighFive:
         type:
             type: string
             length: 255
-        receiverName:
-            type: string
-            length: 255
-            column: receiver_name
     manyToOne:
         publisher:
             targetEntity: User
@@ -28,11 +24,25 @@ XTeam\HighFiveSlackBundle\Entity\HighFive:
                 referencedColumnName: id
         channel:
             targetEntity: Channel
-            inversedBy: highFives
+            inversedBy: highFivesPublished
             cascade: [persist]
             joinColumn:
                 name: channel_id
                 referencedColumnName: id
+    manyToMany:
+        receivers:
+            targetEntity: User
+            cascade: [persist]
+            joinTable:
+                name: high_fives_receivers
+                joinColumns:
+                    receiver_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    high_five_id:
+                        referencedColumnName: id
+
+
     lifecycleCallbacks:
         prePersist: [setCreatedAtValue]
 
