@@ -7,7 +7,8 @@ use XTeam\HighFiveSlackBundle\Builder\UserEntityBuilder;
 use XTeam\HighFiveSlackBundle\Entity\Channel;
 use XTeam\HighFiveSlackBundle\Entity\HighFive;
 use XTeam\HighFiveSlackBundle\Entity\User;
-use XTeam\HighFiveSlackBundle\MessageParser\MentionsMessageParser;
+use XTeam\HighFiveSlackBundle\Message\Parser\MentionsMessageParser;
+use XTeam\HighFiveSlackBundle\Message\Parser\TypeMessageParser;
 use XTeam\SlackMessengerBundle\Model\Message;
 
 class HighFiveMapper
@@ -28,15 +29,22 @@ class HighFiveMapper
      */
     private $mentionsMessageParser;
 
+    /**
+     * @var TypeMessageParser
+     */
+    private $typeMessageParser;
+
     public function __construct(
         UserEntityBuilder $userEntityBuilder,
         ChannelEntityBuilder $channelEntityBuilder,
-        MentionsMessageParser $mentionsMessageParser
+        MentionsMessageParser $mentionsMessageParser,
+        TypeMessageParser $typeMessageParser
     )
     {
         $this->userEntityBuilder = $userEntityBuilder;
         $this->channelEntityBuilder = $channelEntityBuilder;
         $this->mentionsMessageParser = $mentionsMessageParser;
+        $this->typeMessageParser = $typeMessageParser;
     }
 
     /**
@@ -45,9 +53,9 @@ class HighFiveMapper
      */
     public function getHighFive(Message $message)
     {
+        $highFive  = $this->mapHighFive($message);
         $publisher = $this->userEntityBuilder->getUser($message->getUser());
         $channel   = $this->channelEntityBuilder->getChannel($message->getChannel());
-        $highFive  = $this->mapHighFive($message);
 
         $highFive->setPublisher($publisher);
         $highFive->setChannel($channel);
@@ -59,12 +67,11 @@ class HighFiveMapper
     {
         $highFive = new HighFive();
 
+        $highFive->setType($this->typeMessageParser->parse($message->getText()));
+
         foreach ($this->mentionsMessageParser->parse($message->getText()) as $receiver) {
             $highFive->addReceiver($receiver);
         }
-
-        //@todo catch type (VO)
-        $highFive->setType('high five');
 
         return $highFive;
     }

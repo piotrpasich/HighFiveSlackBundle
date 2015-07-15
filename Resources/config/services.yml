@@ -1,18 +1,7 @@
+imports:
+    - { resource: "repositories.yml" }
+
 services:
-    x_team_high_five_slack.repository.user:
-        class: Doctrine\ORM\EntityRepository
-        factory_service: doctrine.orm.default_entity_manager
-        factory_method: getRepository
-        arguments:
-            - XTeamHighFiveSlackBundle:User
-
-    x_team_high_five_slack.repository.channel:
-        class: Doctrine\ORM\EntityRepository
-        factory_service: doctrine.orm.default_entity_manager
-        factory_method: getRepository
-        arguments:
-            - XTeamHighFiveSlackBundle:Channel
-
     x_team_high_five_slack.builder.channel:
         class: XTeam\HighFiveSlackBundle\Builder\ChannelEntityBuilder
         arguments:
@@ -29,6 +18,7 @@ services:
             - @x_team_high_five_slack.builder.user
             - @x_team_high_five_slack.builder.channel
             - @x_team_high_five_slack.parser.mentions_message_parser
+            - @x_team_high_five_slack.parser.type_message_parser
 
     x_team_high_five_slack.listener.message_receiver:
         class: XTeam\HighFiveSlackBundle\Listener\MessageListener
@@ -46,7 +36,13 @@ services:
             - @x_team_slack_messenger.builder.slack_api_user_builder
 
     x_team_high_five_slack.parser.mentions_message_parser:
-        class: XTeam\HighFiveSlackBundle\MessageParser\MentionsMessageParser
+        class: XTeam\HighFiveSlackBundle\Message\Parser\MentionsMessageParser
         arguments:
             - @x_team_high_five_slack.data_provider.slack_user_provider
+
+
+    x_team_high_five_slack.parser.type_message_parser:
+        class: XTeam\HighFiveSlackBundle\Message\Parser\TypeMessageParser
+        arguments:
+            - @x_team_high_five_slack.repository.type
 

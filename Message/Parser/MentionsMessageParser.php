@@ -1,6 +1,6 @@
 <?php
 
-namespace XTeam\HighFiveSlackBundle\MessageParser;
+namespace XTeam\HighFiveSlackBundle\Message\Parser;
 
 use XTeam\HighFiveSlackBundle\DataProvider\SlackUserProvider;
 

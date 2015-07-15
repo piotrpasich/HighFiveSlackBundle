@@ -21,7 +21,7 @@ class HighFive
     private $createdAt;
 
     /**
-     * @var string
+     * @var Type
      */
     private $type;
 
@@ -60,7 +60,7 @@ class HighFive
         return $this->createdAt;
     }
 
-    public function setType($type)
+    public function setType(Type $type)
     {
         $this->type = $type;
 

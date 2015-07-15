@@ -26,12 +26,14 @@ class MessageListener
     {
         $message = $event->getMessage();
 
-        $highFive = $this->highFiveMapper->getHighFive($message);
+        try {
+            $highFive = $this->highFiveMapper->getHighFive($message);
+        } catch (\Exception $e) {
+            return false;
+        }
 
         $this->em->persist($highFive);
         $this->em->flush();
-
-        //we need - publisher_id, publisher_name, receiver_name channel_id, channel_name, created_at,
     }
 
 }

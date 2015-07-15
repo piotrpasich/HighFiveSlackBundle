@@ -11,9 +11,6 @@ XTeam\HighFiveSlackBundle\Entity\HighFive:
         createdAt:
             type: datetime
             column: created_at
-        type:
-            type: string
-            length: 255
     manyToOne:
         publisher:
             targetEntity: User
@@ -29,6 +26,12 @@ XTeam\HighFiveSlackBundle\Entity\HighFive:
             joinColumn:
                 name: channel_id
                 referencedColumnName: id
+        type:
+            targetEntity: Type
+            inversedBy: highFives
+            joinColumn:
+                name: type_id
+                referencedColumnName: id
     manyToMany:
         receivers:
             targetEntity: User
@@ -41,7 +44,6 @@ XTeam\HighFiveSlackBundle\Entity\HighFive:
                 inverseJoinColumns:
                     high_five_id:
                         referencedColumnName: id
-
 
     lifecycleCallbacks:
         prePersist: [setCreatedAtValue]
