@@ -12,7 +12,7 @@ class Period
      */
     private $period;
 
-    public function __construct($period = null, array $parameters)
+    public function __construct($period = null, array $parameters = null)
     {
         $this->period = (new PeriodGuesser())->guess($period, $parameters);
     }

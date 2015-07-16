@@ -15,7 +15,7 @@ class PeriodGuesser
         }, explode('_', $periodParameter)));
         $className = $namespace . '\\' . $periodParameter . 'Period';
 
-        if (class_exists($className)) {
+        if (!empty($periodParameter) && class_exists($className)) {
             return new $className($options);
         }
 

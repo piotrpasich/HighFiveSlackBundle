@@ -42,6 +42,10 @@ public function registerBundles()
 parameters:
   # ...
   slack.token: Your SLack token
+
+  xteam.highfive.message: "High five heroes! |chart|"
+  xteam.highfive.base_url: "http://localhost"
+  xteam.highfive.publich_channel: "#general"
 ```
 
 ### Step 4: Add routes
