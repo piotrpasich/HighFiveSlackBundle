@@ -53,6 +53,11 @@ x_team_slack_messenger:
     resource: "@XTeamSlackMessengerBundle/Resources/config/routing.yml"
     prefix:   /
 
+
+x_team_high_five_slack_bundle:
+    resource: "@XTeamHighFiveSlackBundle/Resources/config/routing.yml"
+    prefix:   /
+
 ```
 
 Notes

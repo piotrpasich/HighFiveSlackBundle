@@ -40,9 +40,18 @@ services:
         arguments:
             - @x_team_high_five_slack.data_provider.slack_user_provider
 
-
     x_team_high_five_slack.parser.type_message_parser:
         class: XTeam\HighFiveSlackBundle\Message\Parser\TypeMessageParser
         arguments:
             - @x_team_high_five_slack.repository.type
+
+    x_team_high_five_slack.chart.high_five_chart_drawer:
+        class: XTeam\HighFiveSlackBundle\Chart\HighFiveChartDrawer
+
+    x_team_high_five_slack.controller.chart:
+         class: XTeam\HighFiveSlackBundle\Controller\ChartController
+         arguments:
+            - @event_dispatcher
+            - @x_team_high_five_slack.chart.high_five_chart_drawer
+            - @x_team_high_five_slack.repository.high_five
 

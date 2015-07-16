@@ -11,7 +11,9 @@
   ],
   "minimum-stability": "dev",
   "require": {
-      "doctrine/doctrine-fixtures-bundle": "2.2.*"
+      "doctrine/doctrine-fixtures-bundle": "2.2.*",
+      "xteam/slackmessengerbundle": "dev-master",
+      "szymach/c-pchart": "1.*"
   },
       "autoload": {
       "psr-4": { "XTeam\\HighFiveSlackBundle\\": "" }
