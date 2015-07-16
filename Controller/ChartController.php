@@ -7,6 +7,7 @@ use Symfony\Component\EventDispatcher\Debug\TraceableEventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use XTeam\HighFiveSlackBundle\Chart\ChartDrawerInterface;
+use XTeam\HighFiveSlackBundle\Entity\DataManipulator\Period;
 use XTeam\HighFiveSlackBundle\Entity\HighFiveRepository;
 
 class ChartController extends Controller
@@ -35,9 +36,9 @@ class ChartController extends Controller
         $this->highFiveRepository = $highFiveRepository;
     }
 
-    public function showAction(Request $request)
+    public function showAction(Request $request, $period = null)
     {
-        $highFives = $this->highFiveRepository->getUserStats();
+        $highFives = $this->highFiveRepository->getUserStats(new Period($period, $request->attributes->all()));
         $chart = $this->chartDrawer->draw($highFives);
 
         //catch the image

@@ -87,4 +87,3 @@ class Channel
         $this->highFives = $highFives;
     }
 }
-
