@@ -29,7 +29,7 @@ class ChartCommand  extends ContainerAwareCommand
     {
         $chartFileName = $this->saveChart();
         $this->getContainer()->get('x_team_slack_messenger.slack.publisher')->publish(
-            $this->getContainer()->getParameter('xteam.highfive.publich_channel'),
+            $this->getContainer()->getParameter('xteam.highfive.publish_channel'),
             str_replace(
                 '|chart|',
                 $this->getContainer()->getParameter('xteam.highfive.base_url') . $this->chartDir . $chartFileName,

@@ -45,7 +45,7 @@ parameters:
 
   xteam.highfive.message: "High five heroes! |chart|"
   xteam.highfive.base_url: "http://localhost"
-  xteam.highfive.publich_channel: "#general"
+  xteam.highfive.publish_channel: "#general"
 ```
 
 ### Step 4: Add routes
