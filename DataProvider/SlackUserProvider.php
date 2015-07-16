@@ -2,10 +2,10 @@
 
 namespace XTeam\HighFiveSlackBundle\DataProvider;
 
+use CL\Slack\Model\User;
 use CL\Slack\Payload\UsersListPayload;
 use CL\Slack\Transport\ApiClient;
 use XTeam\HighFiveSlackBundle\Builder\UserEntityBuilder;
-use XTeam\HighFiveSlackBundle\Entity\UserRepositoryInterface;
 use XTeam\SlackMessengerBundle\Builder\UserBuilderInterface;
 
 class SlackUserProvider
@@ -53,7 +53,7 @@ class SlackUserProvider
         if (empty($this->users)) {
             $users = $this->apiClient->send(new UsersListPayload())->getUsers();
             $this->users = array_combine(
-                array_map(function($user) {
+                array_map(function(User $user) {
                     return $user->getId();
                 }, $users),
                 $users

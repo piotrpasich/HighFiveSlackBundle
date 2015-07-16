@@ -2,7 +2,7 @@
 
 namespace XTeam\HighFiveSlackBundle\Message\Parser;
 
-interface MessageParser
+interface MessageParserInterface
 {
     public function parse($text);
 

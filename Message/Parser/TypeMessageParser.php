@@ -5,7 +5,7 @@ namespace XTeam\HighFiveSlackBundle\Message\Parser;
 use XTeam\HighFiveSlackBundle\DataProvider\SlackUserProvider;
 use XTeam\HighFiveSlackBundle\Entity\TypeRepository;
 
-class TypeMessageParser implements MessageParser
+class TypeMessageParser implements MessageParserInterface
 {
 
     /**

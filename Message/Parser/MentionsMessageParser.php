@@ -4,7 +4,7 @@ namespace XTeam\HighFiveSlackBundle\Message\Parser;
 
 use XTeam\HighFiveSlackBundle\DataProvider\SlackUserProvider;
 
-class MentionsMessageParser implements MessageParser
+class MentionsMessageParser implements MessageParserInterface
 {
     /**
      * @var SlackUserProvider
