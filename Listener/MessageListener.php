@@ -3,6 +3,7 @@
 namespace XTeam\HighFiveSlackBundle\Listener;
 
 use Doctrine\ORM\EntityManager;
+use XTeam\HighFiveSlackBundle\Entity\HighFiveRepository;
 use XTeam\HighFiveSlackBundle\Mapper\HighFiveMapper;
 use XTeam\SlackMessengerBundle\Event\MessageEvent;
 
@@ -14,12 +15,21 @@ class MessageListener
      */
     protected $highFiveMapper;
 
+    /**
+     * @var EntityManager
+     */
     protected $em;
+
+    /**
+     * @var HighFiveRepository
+     */
+    protected $highFiveRepository;
 
     public function __construct(HighFiveMapper $highFiveMapper, EntityManager $em)
     {
         $this->highFiveMapper = $highFiveMapper;
         $this->em = $em;
+        $this->highFiveRepository = $em->getRepository('XTeamHighFiveSlackBundle:highFive');
     }
 
     public function receiveMessage(MessageEvent $event)
@@ -27,13 +37,15 @@ class MessageListener
         $message = $event->getMessage();
 
         try {
+            if ($this->highFiveRepository->getMatch($message->getCreatedAt(), $message->getUser()->getId())) {
+                return false;
+            }
+
             $highFive = $this->highFiveMapper->getHighFive($message);
+            $this->em->persist($highFive);
+            $this->em->flush();
         } catch (\Exception $e) {
             return false;
         }
-
-        $this->em->persist($highFive);
-        $this->em->flush();
     }
-
 }

@@ -27,6 +27,7 @@ services:
             - @doctrine.orm.default_entity_manager
         tags:
             - { name: kernel.event_listener, event: slack.message_received, method: receiveMessage }
+            - { name: kernel.event_listener, event: xteam.five.message_received, method: receiveMessage }
 
     x_team_high_five_slack.data_provider.slack_user_provider:
         class: XTeam\HighFiveSlackBundle\DataProvider\SlackUserProvider

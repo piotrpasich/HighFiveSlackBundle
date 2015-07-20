@@ -15,6 +15,7 @@ class Channel
      */
     private $id;
 
+    private $slackId;
     /**
      * @var string
      */
@@ -28,12 +29,10 @@ class Channel
         $this->highFives = new ArrayCollection();
     }
 
-    /**
-     * @param string $id
-     */
-    public function setId($id)
+
+    public function setSlackId($slackId)
     {
-        $this->id = $id;
+        $this->slackId = $slackId;
 
         return $this;
     }
@@ -46,6 +45,11 @@ class Channel
     public function getId()
     {
         return $this->id;
+    }
+
+    public function getSlackId()
+    {
+        return $this->channelId;
     }
 
     /**

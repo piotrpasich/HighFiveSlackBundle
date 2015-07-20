@@ -21,10 +21,9 @@ class ChannelEntityBuilder
 
     public function getChannel(Channel $channel)
     {
-        return $this->channelRepository->findOneById((string)$channel->getId()) ?:
+        return $this->channelRepository->findOneBySlackId((string)$channel->getId()) ?:
             (new ChannelEntity())
                 ->setName((string)$channel->getName())
-                ->setId((string)$channel->getId());
+                ->setSlackId((string)$channel->getId());
     }
-
 }

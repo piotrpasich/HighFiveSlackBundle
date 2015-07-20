@@ -4,9 +4,13 @@ XTeam\HighFiveSlackBundle\Entity\Channel:
     repositoryClass: XTeam\HighFiveSlackBundle\Entity\ChannelRepository
     id:
         id:
-            type: string
+            type: integer
             id: true
+            generator:
+                strategy: AUTO
     fields:
+        slackId:
+            type: string
         name:
             type: string
             length: 255

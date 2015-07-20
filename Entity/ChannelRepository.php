@@ -8,6 +8,6 @@ class ChannelRepository extends EntityRepository implements ChannelRepositoryInt
 {
     public function getOneById($id)
     {
-        return parent::getOneById($id);
+        return parent::getOneBySlackId($id);
     }
 }

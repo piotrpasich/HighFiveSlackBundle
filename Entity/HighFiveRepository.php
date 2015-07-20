@@ -25,4 +25,28 @@ class HighFiveRepository extends EntityRepository
 
         return new HighFivesCollection($highFives, new UserCollectingStrategy());
     }
+
+    public function getMatch($createdAt, $publisherId)
+    {
+        return $this->findOneBy([
+            'createdAt' => $createdAt,
+            'publisher' => $publisherId
+        ]);
+    }
+
+    public function getLastTimeStamp()
+    {
+        $highFive = $this->createQueryBuilder('hv')
+            ->select('hv.createdAt')
+            ->setMaxResults(1)
+            ->orderBy('hv.createdAt', 'DESC')
+            ->getQuery()
+            ->getArrayResult();
+
+        if (empty($highFive)) {
+            return null;
+        }
+
+        return $highFive[0]['createdAt']->getTimestamp();
+    }
 }

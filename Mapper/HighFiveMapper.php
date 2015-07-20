@@ -68,6 +68,7 @@ class HighFiveMapper
         $highFive = new HighFive();
 
         $highFive->setType($this->typeMessageParser->parse($message->getText()));
+        $highFive->setCreatedAt($message->getCreatedAt());
 
         foreach ($this->mentionsMessageParser->parse($message->getText()) as $receiver) {
             $highFive->addReceiver($receiver);

@@ -60,6 +60,13 @@ class HighFive
         return $this->createdAt;
     }
 
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
     public function setType(Type $type)
     {
         $this->type = $type;

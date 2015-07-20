@@ -45,7 +45,5 @@ XTeam\HighFiveSlackBundle\Entity\HighFive:
                 inverseJoinColumns:
                     high_five_id:
                         referencedColumnName: id
-
-    lifecycleCallbacks:
-        prePersist: [setCreatedAtValue]
+                        unique: false
 
