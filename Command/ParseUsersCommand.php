@@ -2,6 +2,7 @@
 
 namespace XTeam\HighFiveSlackBundle\Command;
 
+use CL\Slack\Payload\UsersListPayload;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,33 +13,31 @@ use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\HttpFoundation\Request;
 use XTeam\SlackMessengerBundle\Event\MessageEvent;
 
-class ParseCommand  extends ContainerAwareCommand
+class ParseUsersCommand extends ContainerAwareCommand
 {
 
     protected function configure()
     {
         $this
-            ->setName('xteam:slack:parse')
-            ->setDescription('Parses messeges from slack')
+            ->setName('xteam:slack:parse:users')
+            ->setDescription('Parses users from slack')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
-        $lastHighFiveTimestamp = $em->getRepository('XTeamHighFiveSlackBundle:HighFive')->getLastTimeStamp() + 1;
+        $userRepository = $em->getRepository('XTeamHighFiveSlackBundle:User');
+        $users = $this->getContainer()->get('x_team_slack_messenger.slack.users.provider')->getAll();
 
-        $messages = $this->getContainer()
-            ->get('x_team_slack_messenger.slack.provider')
-            ->getMessagesFromAllChannels($lastHighFiveTimestamp);
-
-        foreach ($messages as $message) {
-            $output->writeln($message->getText());
-            $this->getContainer()
-                ->get('event_dispatcher')
-                ->dispatch('xteam.five.message_received', new MessageEvent($message));
+        foreach ($users as $user) {
+            $userMatch = $userRepository->getOneById($user->getId());
+            if (null != $userMatch) {
+                $userMatch->setName($user->getName());
+                $em->persist($userMatch);
+            }
         }
 
-        $output->writeln(sprintf("%d messages received", count($messages)));
+        $em->flush();
     }
 }

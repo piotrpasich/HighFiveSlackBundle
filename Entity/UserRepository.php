@@ -8,6 +8,6 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
 {
     public function getOneById($id)
     {
-        return parent::getOneById($id);
+        return parent::findOneById($id);
     }
 }

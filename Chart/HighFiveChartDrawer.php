@@ -32,7 +32,10 @@ class HighFiveChartDrawer implements ChartDrawerInterface
 
         $chart->drawScale([
             "Factors" => [10000],
-            'LabelRotation' => 45
+            'LabelRotation' => 45,
+//            'ManualScale' => [ 0 => [
+//                'min' => 0
+//            ]]
         ]);
 
         $chart->drawStackedBarChart([
