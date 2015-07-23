@@ -28,12 +28,6 @@ class ParseCommand  extends ContainerAwareCommand
         $em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
         $lastHighFiveTimestamp = $em->getRepository('XTeamHighFiveSlackBundle:HighFive')->getLastTimeStamp() + 1;
 
-        //@papi change that
-        $lastHighFiveTimestamp = (new \DateTime())
-            ->sub(new \DateInterval('P3D'))
-            ->setTime(0, 0, 0)
-            ->getTimestamp();
-
         $messages = $this->getContainer()
             ->get('x_team_slack_messenger.slack.provider')
             ->getMessagesFromAllChannels($lastHighFiveTimestamp);
