@@ -16,11 +16,15 @@ class HighFiveChartDrawer implements ChartDrawerInterface
         $myData = new pData();
         $pChartAdapter = new PChartAdapter();
 
-        foreach ($pChartAdapter->getData($highFivesCollection) as $key => $data) {
-            $myData->addPoints($data, $key);
-        }
+        if ( ! empty($pChartAdapter->getData($highFivesCollection))) {
+            foreach ($pChartAdapter->getData($highFivesCollection) as $key => $data) {
+                $myData->addPoints($data, $key);
+            }
 
-        $myData->addPoints($highFivesCollection->getKeys(), "Options");
+            $myData->addPoints($highFivesCollection->getKeys(), "Options");
+        } else {
+            $myData->addPoints(VOID);
+        }
 
         $myData->setAbscissa("Options");
         // create the image and set the data
@@ -33,9 +37,7 @@ class HighFiveChartDrawer implements ChartDrawerInterface
         $chart->drawScale([
             "Factors" => [10000],
             'LabelRotation' => 45,
-//            'ManualScale' => [ 0 => [
-//                'min' => 0
-//            ]]
+            'Mode' => SCALE_MODE_START0
         ]);
 
         $chart->drawStackedBarChart([

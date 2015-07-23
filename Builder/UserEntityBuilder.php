@@ -14,6 +14,8 @@ class UserEntityBuilder
      */
     private $userRepository;
 
+    private $savedRecords = [];
+
     public function __construct(UserRepositoryInterface $userRepository)
     {
         $this->userRepository = $userRepository;
@@ -21,9 +23,13 @@ class UserEntityBuilder
 
     public function getUser(User $user)
     {
-        return $this->userRepository->findOneById((string)$user->getId()) ?:
-            (new UserEntity())
-                ->setName((string)$user->getName())
-                ->setId((string)$user->getId());
+        if (!isset($this->savedRecords[(string)$user->getId()]) || null == $this->savedRecords[(string)$user->getId()]) {
+            $this->savedRecords[(string)$user->getId()] = $this->userRepository->findOneById((string)$user->getId()) ?:
+                (new UserEntity())
+                    ->setName((string)$user->getName())
+                    ->setId((string)$user->getId());
+        }
+
+        return $this->savedRecords[(string)$user->getId()];
     }
 }

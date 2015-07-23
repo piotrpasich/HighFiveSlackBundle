@@ -14,6 +14,8 @@ class ChannelEntityBuilder
      */
     private $channelRepository;
 
+    private $savedRecords = [];
+
     public function __construct(ChannelRepositoryInterface $channelRepository)
     {
         $this->channelRepository = $channelRepository;
@@ -21,9 +23,13 @@ class ChannelEntityBuilder
 
     public function getChannel(Channel $channel)
     {
-        return $this->channelRepository->findOneBySlackId((string)$channel->getId()) ?:
-            (new ChannelEntity())
-                ->setName((string)$channel->getName())
-                ->setSlackId((string)$channel->getId());
+        if (!isset($this->savedRecords[(string)$channel->getId()]) || null == $this->savedRecords[(string)$channel->getId()]) {
+            $this->savedRecords[(string)$channel->getId()] =  $this->channelRepository->findOneBySlackId((string)$channel->getId()) ?:
+                (new ChannelEntity())
+                    ->setName((string)$channel->getName())
+                    ->setSlackId((string)$channel->getId());
+        }
+
+        return $this->savedRecords[(string)$channel->getId()];
     }
 }

@@ -105,7 +105,7 @@ class HighFive
 
     public function addReceiver(User $receiver)
     {
-        $this->receivers->add($receiver);
+        $this->receivers->set($receiver->getId(), $receiver);
 
         return $this;
     }

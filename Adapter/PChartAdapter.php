@@ -18,7 +18,7 @@ class PChartAdapter
                 if (isset($highFiveStat->getStats()[$type])) {
                     $preparedData[$type][] = $highFiveStat->getStats()[$type];
                 } else {
-                    $preparedData[$type][] = 0.01;
+                    $preparedData[$type][] = 0;
                 }
             }
         }
@@ -30,10 +30,13 @@ class PChartAdapter
     {
         $types = [];
 
-
         foreach ($highFivesCollection as $key => $highFiveStat) {
             $types = array_merge($types, array_keys($highFiveStat->getStats()));
         }
+
+        $types = array_unique($types);
+
+        sort($types);
 
         return $types;
     }

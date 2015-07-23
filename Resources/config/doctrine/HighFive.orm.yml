@@ -40,10 +40,11 @@ XTeam\HighFiveSlackBundle\Entity\HighFive:
             joinTable:
                 name: high_fives_receivers
                 joinColumns:
-                    receiver_id:
-                        referencedColumnName: id
-                inverseJoinColumns:
                     high_five_id:
+                        referencedColumnName: id
+                        unique: false
+                inverseJoinColumns:
+                    receiver_id:
                         referencedColumnName: id
                         unique: false
 
